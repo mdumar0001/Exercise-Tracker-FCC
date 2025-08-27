@@ -29,7 +29,7 @@ app.post("/api/users", (req, res) => {
   users.push(newUser);
   exercises[newUser._id] = [];
   userIdCounter++;
-  res.json(newUser);
+  res.json(newUser); //  Only username & _id
 });
 
 // 2. Get all Users
@@ -46,7 +46,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   if (!user) return res.json({ error: "User not found" });
 
   const exercise = {
-    description,
+    description: description.toString(), //  force string
     duration: parseInt(duration),
     date: date ? new Date(date) : new Date(),
   };
@@ -57,7 +57,7 @@ app.post("/api/users/:_id/exercises", (req, res) => {
     username: user.username,
     description: exercise.description,
     duration: exercise.duration,
-    date: exercise.date.toDateString(),
+    date: exercise.date.toDateString(), //  formatted string
     _id: user._id,
   });
 });
@@ -86,12 +86,12 @@ app.get("/api/users/:_id/logs", (req, res) => {
 
   res.json({
     username: user.username,
-    count: log.length,
+    count: log.length, //  required
     _id: user._id,
     log: log.map((e) => ({
-      description: e.description,
+      description: e.description.toString(), //  ensure string
       duration: e.duration,
-      date: e.date.toDateString(),
+      date: e.date.toDateString(), //  string format
     })),
   });
 });
